@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/generated_story.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="story-container">
+    <div class="story-card">
+        <!-- Header del cuento -->
+        <div class="story-header">
+            <h1 class="story-title">{{ cuento.titulo|upper }}</h1>
+            <div class="story-meta-container">
+                <div class="story-meta">
+                    <div class="meta-item">
+                        <div class="meta-icon">👤</div>
+                        <span>Personaje: {{ cuento.personaje_principal }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">🎭</div>
+                        <span>Tema: {{ cuento.get_tema_display }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">📅</div>
+                        <span>{{ cuento.fecha_creacion|date:"d/m/Y" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Imagen del cuento -->
+        <div class="story-image-section">
+            {% if cuento.imagen_url %}
+                <img src="{{ cuento.imagen_url }}" alt="{{ cuento.titulo }}" class="story-image">
+            {% else %}
+                <div class="story-image-placeholder">
+                    <div class="placeholder-book">📖</div>
+                    <div class="placeholder-title">{{ cuento.titulo }}</div>
+                    <div class="placeholder-subtitle">Tu cuento personalizado está listo</div>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Contenido del cuento -->
+        <div class="story-content-section">
+            <div class="story-text" id="story-content">
+                {{ cuento.contenido|linebreaks }}
+            </div>
+
+            {% if cuento.moraleja %}
+            <div class="story-moraleja">
+                <div class="moraleja-header">
+                    <div class="moraleja-icon">✨</div>
+                    <h3 class="moraleja-title">Moraleja</h3>
+                    <div class="moraleja-icon">✨</div>
+                </div>
+                <div class="moraleja-content" id="moraleja-content">
+                    {{ cuento.moraleja }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="story-actions">
+            <div class="actions-grid">
+                <button class="action-btn btn-audio" id="audio-btn">
+                    <div class="btn-icon">🎧</div>
+                    <span>Escuchar Cuento</span>
+                </button>
+
+                <a href="{% url 'stories:descargar_pdf' cuento.id %}" class="action-btn btn-secondary">
+                    <div class="btn-icon">📄</div>
+                    <span>Descargar Cuento</span>
+                </a>
+
+                <a href="{% url 'stories:generar' %}" class="action-btn btn-success">
+                    <div class="btn-icon">✨</div>
+                    <span>Crear Nuevo Cuento</span>
+                </a>
+
+                <form method="post" action="{% url 'stories:guardar_biblioteca' cuento.id %}" class="action-form">
+                    {% csrf_token %}
+                    <button type="submit" class="action-btn btn-library">
+                        <div class="btn-icon">📚</div>
+                        <span>Guardar en la Biblioteca</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/generated_story.js' %}"></script>
+{% endblock %}

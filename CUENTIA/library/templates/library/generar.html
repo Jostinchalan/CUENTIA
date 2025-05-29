@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="generar-container" style="padding: 2rem;">
+    <div class="header" style="margin-bottom: 2rem;">
+        <h1 style="color: #333; margin-bottom: 0.5rem;">Generar Cuento</h1>
+        <p style="color: #666;">Crea cuentos personalizados para los niños</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" style="background: #d4edda; color: #155724; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="generar-form">
+        <form method="post" class="cuento-form" style="max-width: 600px;">
+            {% csrf_token %}
+
+            <div class="form-section" style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-bottom: 1.5rem; color: #333;">Información del Cuento</h3>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="titulo" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Título del Cuento:</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Ingresa un título para el cuento"
+                           style="width: 100%; padding: 0.75rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="personaje" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Personaje Principal:</label>
+                    <input type="text" id="personaje" name="personaje" placeholder="Nombre del personaje principal"
+                           style="width: 100%; padding: 0.75rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="tema" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Tema del Cuento:</label>
+                    <select id="tema" name="tema" style="width: 100%; padding: 0.75rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                        <option value="">Selecciona un tema</option>
+                        <option value="aventura">Aventura</option>
+                        <option value="fantasia">Fantasía</option>
+                        <option value="amistad">Amistad</option>
+                        <option value="familia">Familia</option>
+                        <option value="naturaleza">Naturaleza</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="edad" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Edad del Niño:</label>
+                    <select id="edad" name="edad" style="width: 100%; padding: 0.75rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                        <option value="">Selecciona la edad</option>
+                        <option value="3-5">3-5 años</option>
+                        <option value="6-8">6-8 años</option>
+                        <option value="9-12">9-12 años</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label for="longitud" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Longitud del Cuento:</label>
+                    <select id="longitud" name="longitud" style="width: 100%; padding: 0.75rem; border: 2px solid #e1e5e9; border-radius: 8px; font-size: 1rem;">
+                        <option value="">Selecciona la longitud</option>
+                        <option value="corto">Corto (2-3 minutos)</option>
+                        <option value="medio">Medio (5-7 minutos)</option>
+                        <option value="largo">Largo (10-15 minutos)</option>
+                    </select>
+                </div>
+
+                <div class="form-actions" style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-generar"
+                            style="background: #7c3aed; color: white; padding: 0.75rem 2rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; flex: 1;">
+                        Generar Cuento
+                    </button>
+                    <button type="reset" class="btn-limpiar"
+                            style="background: #6b7280; color: white; padding: 0.75rem 2rem; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                        Limpiar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block dashboard_content %}
+<h1 class="text-2xl font-bold text-slate-800 mb-6">Generar Cuento</h1>
+
+<div class="tabs">
+  <div class="tab active" data-toggle="tab" data-target="basic-tab">Configuración Básica</div>
+  <div class="tab" data-toggle="tab" data-target="advanced-tab">Configuración Avanzada</div>
+</div>
+
+<div id="basic-tab" class="tab-content active">
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-2">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Información del Cuento</h2>
+        </div>
+        <div class="card-content">
+          <form>
+            <div class="form-group">
+              <label class="form-label" for="profile">Perfil del Niño</label>
+              <select class="form-select" id="profile" name="profile">
+                <option value="" selected disabled>Selecciona un perfil</option>
+                <option value="maria">María (7 años)</option>
+                <option value="miguel">Miguel (5 años)</option>
+                <option value="cristina">Cristina (9 años)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="title">Título del Cuento (opcional)</label>
+              <input type="text" class="form-input" id="title" name="title" placeholder="Deja en blanco para generación automática">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="theme">Temática</label>
+              <select class="form-select" id="theme" name="theme">
+                <option value="" selected disabled>Selecciona una temática</option>
+                <option value="fantasy">Fantasía</option>
+                <option value="adventure">Aventura</option>
+                <option value="scifi">Ciencia Ficción</option>
+                <option value="animals">Animales</option>
+                <option value="friendship">Amistad</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="values">Valores o Moraleja</label>
+              <select class="form-select" id="values" name="values">
+                <option value="" selected disabled>Selecciona valores a transmitir</option>
+                <option value="friendship">Amistad</option>
+                <option value="respect">Respeto</option>
+                <option value="honesty">Honestidad</option>
+                <option value="perseverance">Perseverancia</option>
+                <option value="empathy">Empatía</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="description">Descripción o Ideas Adicionales (opcional)</label>
+              <textarea class="form-textarea" id="description" name="description" placeholder="Añade detalles específicos que quieras incluir en el cuento" rows="4"></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card mb-6">
+        <div class="card-header">
+          <h2 class="card-title">Opciones de Generación</h2>
+        </div>
+        <div class="card-content">
+          <div class="switch-container mb-4">
+            <label class="form-label" for="audio-narration">Generar Narración en Audio</label>
+            <label class="switch">
+              <input type="checkbox" id="audio-narration">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="length">Longitud del Cuento</label>
+            <select class="form-select" id="length" name="length">
+              <option value="" selected disabled>Selecciona longitud</option>
+              <option value="short">Corto (3-5 min)</option>
+              <option value="medium">Medio (5-10 min)</option>
+              <option value="long">Largo (10-15 min)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="age-range">Rango de Edad</label>
+            <select class="form-select" id="age-range" name="age-range">
+              <option value="" selected disabled>Selecciona rango</option>
+              <option value="4-6">4-6 años</option>
+              <option value="7-9">7-9 años</option>
+              <option value="10-12">10-12 años</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">Generar Cuento</button>
+    </div>
+  </div>
+</div>
+
+<div id="advanced-tab" class="tab-content">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Configuración Avanzada</h2>
+    </div>
+    <div class="card-content">
+      <form>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="form-group">
+            <label class="form-label" for="style">Estilo Narrativo</label>
+            <select class="form-select" id="style" name="style">
+              <option value="" selected disabled>Selecciona estilo</option>
+              <option value="descriptive">Descriptivo</option>
+              <option value="dialogue">Diálogo Abundante</option>
+              <option value="poetic">Poético</option>
+              <option value="humorous">Humorístico</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="setting">Ambientación</label>
+            <select class="form-select" id="setting" name="setting">
+              <option value="" selected disabled>Selecciona ambientación</option>
+              <option value="forest">Bosque Encantado</option>
+              <option value="space">Espacio Exterior</option>
+              <option value="ocean">Fondo del Mar</option>
+              <option value="city">Ciudad Futurista</option>
+              <option value="castle">Castillo Medieval</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="characters">Personajes Adicionales</label>
+            <input type="text" class="form-input" id="characters" name="characters" placeholder="Ej: hada madrina, dragón amistoso">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="language-level">Nivel de Lenguaje</label>
+            <select class="form-select" id="language-level" name="language-level">
+              <option value="" selected disabled>Selecciona nivel</option>
+              <option value="simple">Simple (vocabulario básico)</option>
+              <option value="intermediate">Intermedio</option>
+              <option value="advanced">Avanzado (vocabulario rico)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="specific-elements">Elementos Específicos a Incluir</label>
+          <textarea class="form-textarea" id="specific-elements" name="specific-elements" placeholder="Objetos, lugares o situaciones que quieras que aparezcan en el cuento" rows="3"></textarea>
+        </div>
+
+        <div class="switch-container mb-4">
+          <label class="form-label" for="educational">Enfoque Educativo</label>
+          <label class="switch">
+            <input type="checkbox" id="educational">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="switch-container mb-4">
+          <label class="form-label" for="interactive">Elementos Interactivos</label>
+          <label class="switch">
+            <input type="checkbox" id="interactive">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-6 flex justify-end">
+    <button type="submit" class="btn btn-primary">Generar Cuento con Configuración Avanzada</button>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,587 @@
+/* Dashboard.css - es de base.html */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  height: 100%;
+  overflow: hidden; /* CRÍTICO: Sin scroll en body */
+}
+
+.dashboard-container {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px; /* Sidebar izq | Contenido | Sidebar der */
+  grid-template-rows: 80px 1fr; /* Barra superior | Contenido */
+  grid-template-areas:
+    "sidebar topbar rightbar"
+    "sidebar content rightbar";
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+/* SIDEBAR IZQUIERDO - COMPLETAMENTE FIJO */
+.sidebar {
+  grid-area: sidebar;
+  background: white;
+  border-right: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Solo si el menú es muy largo */
+  overflow-x: hidden;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+.logo {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.logo img {
+  width: 40px;
+  height: 40px;
+}
+
+.logo h1 {
+  color: #8B5CF6;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.menu-section {
+  padding: 1.5rem;
+  flex-shrink: 0;
+}
+
+.menu-section h2 {
+  color: #9CA3AF;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  letter-spacing: 1px;
+}
+
+.menu-section nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.menu-section nav a {
+  color: #374151;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.menu-section nav a:hover {
+  background: #F3F4F6;
+  color: #8B5CF6;
+}
+
+.menu-section nav a.active {
+  background: #DDD6FE;
+  color: #8B5CF6;
+  font-weight: 600;
+}
+
+/* BARRA SUPERIOR - COMPLETAMENTE FIJA */
+.top-bar {
+  grid-area: topbar;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  border-left: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 50;
+  position: sticky;
+  top: 0;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 400px;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  background: #F9FAFB;
+}
+
+.search-bar input::placeholder {
+  color: #9CA3AF;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-profile span {
+  font-weight: 600;
+  color: #374151;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ÁREA DE CONTENIDO - AQUÍ VA EL SCROLL */
+.dashboard-content {
+  grid-area: content;
+  overflow-y: auto; /* SOLO AQUÍ HAY SCROLL */
+  overflow-x: hidden;
+  background: #f8f9fa;
+  padding: 2rem;
+  height: calc(100vh - 80px); /* Altura total menos barra superior */
+}
+
+/* SIDEBAR DERECHO - COMPLETAMENTE FIJO */
+.right-sidebar {
+  grid-area: rightbar;
+  background: white;
+  border-left: 1px solid #e5e7eb;
+  overflow-y: auto; /* Solo si las estadísticas son muy largas */
+  overflow-x: hidden;
+  padding: 1.5rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+/* Contenedor main-content ya no es necesario con CSS Grid */
+.main-content {
+  display: contents; /* Permite que los hijos usen el grid del padre */
+}
+
+/* Estilos para el contenido del dashboard */
+.welcome-banner {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.welcome-banner h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  letter-spacing: 2px;
+}
+
+.welcome-banner p {
+  font-size: 1.125rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.controls button {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.controls button:hover {
+  background: #f3f4f6;
+  border-color: #8B5CF6;
+}
+
+.story-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.story-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.story-card:hover {
+  transform: translateY(-5px);
+}
+
+.story-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.story-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tags {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tags span {
+  background: rgba(139, 92, 246, 0.9);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.story-info {
+  padding: 1.5rem;
+}
+
+.story-info h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.5rem 0;
+}
+
+.story-info p {
+  color: #6B7280;
+  margin: 0 0 1rem 0;
+  font-size: 0.875rem;
+}
+
+.author {
+  color: #8B5CF6;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.popular-stories {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.popular-story-card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.popular-story-card:hover {
+  transform: translateX(5px);
+}
+
+.popular-story-icon {
+  width: 40px;
+  height: 40px;
+  background: #DDD6FE;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B5CF6;
+  flex-shrink: 0;
+}
+
+.popular-story-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 0.25rem 0;
+}
+
+.popular-story-info p {
+  color: #6B7280;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.welcome-message {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-top: 2rem;
+}
+
+.welcome-message p {
+  color: #6B7280;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Estilos para el sidebar derecho */
+.user-card {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: white;
+}
+
+.user-card-header {
+  margin-bottom: 1rem;
+}
+
+.user-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+  border: 3px solid white;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-card-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.user-card-content p {
+  font-size: 0.875rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.stats-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.stats-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.stats-card-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-icon {
+  width: 30px;
+  height: 30px;
+  background: #DDD6FE;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8B5CF6;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.stat-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-info p {
+  font-size: 0.75rem;
+  color: #6B7280;
+  margin: 0;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #8B5CF6;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.chart-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 1rem 0;
+}
+
+.chart {
+  display: flex;
+  align-items: end;
+  gap: 0.5rem;
+  height: 100px;
+}
+
+.chart-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chart-bar-value {
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  border-radius: 0.25rem;
+  width: 100%;
+  min-height: 4px;
+}
+
+.chart-bar-label {
+  font-size: 0.75rem;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .dashboard-container {
+    grid-template-columns: 280px 1fr; /* Sin sidebar derecho */
+    grid-template-areas:
+      "sidebar topbar"
+      "sidebar content";
+  }
+
+  .right-sidebar {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 1fr; /* Solo contenido */
+    grid-template-rows: 60px 1fr;
+    grid-template-areas:
+      "topbar"
+      "content";
+  }
+
+  .sidebar {
+    display: none; /* O implementar menú hamburguesa */
+  }
+
+  .top-bar {
+    padding: 1rem;
+    border-left: none;
+    border-right: none;
+  }
+
+  .dashboard-content {
+    padding: 1rem;
+  }
+
+  .search-bar {
+    max-width: 200px;
+  }
+
+  .welcome-banner {
+    padding: 2rem 1rem;
+  }
+
+  .welcome-banner h1 {
+    font-size: 2rem;
+  }
+
+  .story-cards {
+    grid-template-columns: 1fr;
+  }
+}

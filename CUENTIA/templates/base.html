@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - CuentIA</title>
+    <link rel="stylesheet" href="{% static 'css/styles_landing.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar izquierdo -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="{% static 'images/robot4.png' %}" alt="CuentIA Logo">
+                <h1>CuentIA</h1>
+            </div>
+
+            <div class="menu-section">
+                <h2>GENERAL</h2>
+                <nav>
+                    <a href="{% url 'dashboard' %}" class="{% if request.path == '/dashboard/' %}active{% endif %}">INICIO</a>
+                    <a href="{% url 'user:create_perfil' %}" class="{% if request.path == '/user/perfiles/crear/' %}active{% endif %}">CREAR PERFIL INFANTIL</a>
+                    <a href="{% url 'stories:generar' %}" class="{% if request.path == '/stories/generar/' %}active{% endif %}">GENERAR CUENTO</a>
+                    <a href="{% url 'library:index' %}" class="{% if request.path == '/library/' %}active{% endif %}">BIBLIOTECA</a>
+                    <a href="{% url 'user:perfil_list' %}" class="{% if request.path == '/user/perfiles/' %}active{% endif %}">PERFILES</a>
+                    <a href="{% url 'library:seguimiento' %}" class="{% if request.path == '/library/seguimiento/' %}active{% endif %}">SEGUIMIENTO LECTOR</a>
+                </nav>
+            </div>
+
+            <div class="menu-section">
+                <h2>CONFIGURACIÓN</h2>
+                <nav>
+                    <a href="#">CONFIGURACIONES</a>
+                    <a href="{% url 'user:logout' %}">CERRAR SESIÓN</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Barra superior -->
+            <div class="top-bar">
+                <div class="search-bar">
+                    <input type="text" placeholder="BUSCAR CUENTO">
+                </div>
+                <div class="user-profile">
+                    <span>{{ request.user.username|upper }}</span>
+                    <div class="avatar">
+                        <img src="{% static 'images/robot4.png' %}" alt="Avatar">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido del dashboard -->
+            <div class="dashboard-content">
+                {% block content %}
+                <!-- Aquí va el contenido específico de cada página -->
+
+                <!-- Welcome banner -->
+                <div class="welcome-banner">
+                    <h1>BIENVENIDO/A A CUENTIA</h1>
+                    <p>DEJA CORRER TU IMAGINACIÓN Y CREA LOS MEJORES CUENTOS</p>
+                </div>
+
+                <!-- Actividad reciente -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2>ACTIVIDAD RECIENTE</h2>
+                        <div class="controls">
+                            <button class="prev">←</button>
+                            <button class="next">→</button>
+                        </div>
+                    </div>
+
+                    <div class="story-cards">
+                        <!-- Tarjeta de cuento 1 -->
+                        <div class="story-card">
+                            <div class="story-image">
+                                <img src="{% static 'images/robot4.png' %}" alt="Cuento">
+                                <div class="tags">
+                                    <span>7-9 AÑOS</span>
+                                    <span>FANTASÍA</span>
+                                </div>
+                            </div>
+                            <div class="story-info">
+                                <h3>ANA Y EL BOSQUE MÁGICO</h3>
+                                <p>CUENTO CREADO PARA MARÍA</p>
+                                <div class="author">
+                                    <span>ADMINISTRADOR</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta de cuento 2 -->
+                        <div class="story-card">
+                            <div class="story-image">
+                                <img src="{% static 'images/robot4.png' %}" alt="Cuento">
+                                <div class="tags">
+                                    <span>4-7 AÑOS</span>
+                                    <span>CIENCIA FICCIÓN</span>
+                                </div>
+                            </div>
+                            <div class="story-info">
+                                <h3>MI AMIGO ROBOT</h3>
+                                <p>CUENTO CREADO PARA MIGUEL</p>
+                                <div class="author">
+                                    <span>ADMINISTRADOR</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta de cuento 3 -->
+                        <div class="story-card">
+                            <div class="story-image">
+                                <img src="{% static 'images/robot4.png' %}" alt="Cuento">
+                                <div class="tags">
+                                    <span>7-9 AÑOS</span>
+                                    <span>AVENTURA</span>
+                                </div>
+                            </div>
+                            <div class="story-info">
+                                <h3>LLUVIA DE LIBROS</h3>
+                                <p>CUENTO CREADO PARA CRISTINA</p>
+                                <div class="author">
+                                    <span>ADMINISTRADOR</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuentos populares -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2>CUENTOS POPULARES</h2>
+                        <div class="controls">
+                            <button class="prev">←</button>
+                            <button class="next">→</button>
+                        </div>
+                    </div>
+
+                    <div class="popular-stories">
+                        <!-- Cuento popular 1 -->
+                        <div class="popular-story-card">
+                            <div class="popular-story-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 19.5V4.5C4 3.4 4.9 2.5 6 2.5H18C19.1 2.5 20 3.4 20 4.5V19.5L12 15.5L4 19.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="popular-story-info">
+                                <h3>ANA Y EL BOSQUE MÁGICO</h3>
+                                <p>6 VECES LEÍDO</p>
+                            </div>
+                        </div>
+
+                        <!-- Cuento popular 2 -->
+                        <div class="popular-story-card">
+                            <div class="popular-story-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 19.5V4.5C4 3.4 4.9 2.5 6 2.5H18C19.1 2.5 20 3.4 20 4.5V19.5L12 15.5L4 19.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="popular-story-info">
+                                <h3>MI AMIGO ROBOT</h3>
+                                <p>5 VECES LEÍDO</p>
+                            </div>
+                        </div>
+
+                        <!-- Cuento popular 3 -->
+                        <div class="popular-story-card">
+                            <div class="popular-story-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 19.5V4.5C4 3.4 4.9 2.5 6 2.5H18C19.1 2.5 20 3.4 20 4.5V19.5L12 15.5L4 19.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div class="popular-story-info">
+                                <h3>LLUVIA DE LIBROS</h3>
+                                <p>4 VECES LEÍDO</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensaje de bienvenida -->
+                <div class="welcome-message">
+                    <p>
+                        Bienvenido a CuentIA, la innovadora plataforma que transforma tu imaginación en historias mágicas con ayuda de la inteligencia artificial. ¿Quieres crear cuentos únicos para tus hijos, alumnos o simplemente para disfrutar de momentos inolvidables? ¡Has llegado al lugar perfecto!
+                    </p>
+                </div>
+                {% endblock %}
+            </div>
+        </div>
+
+        <!-- Sidebar derecho (estadísticas) -->
+        <div class="right-sidebar">
+            <!-- Perfil de usuario -->
+            <div class="user-card">
+                <div class="user-card-header">
+                    <div class="user-avatar">
+                        <img src="{% static 'images/robot4.png' %}" alt="Avatar">
+                    </div>
+                </div>
+                <div class="user-card-content">
+                    <h3>BUENOS DÍAS {{ request.user.username|upper }}</h3>
+                    <p>DISFRUTA LA NARRACIÓN DE CUENTOS PERSONALIZADOS</p>
+                </div>
+            </div>
+
+            <!-- Estadísticas rápidas -->
+            <div class="stats-card">
+                <div class="stats-card-header">
+                    <h3>ESTADÍSTICAS RÁPIDAS</h3>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 20V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 20V4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6 20V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <div class="stats-card-content">
+                    <div class="stat-item">
+                        <div class="stat-icon">1</div>
+                        <div class="stat-info">
+                            <p>TOTAL DE CUENTOS</p>
+                        </div>
+                        <div class="stat-value">24</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">2</div>
+                        <div class="stat-info">
+                            <p>CUENTOS DE ESTE MES</p>
+                        </div>
+                        <div class="stat-value">8</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">3</div>
+                        <div class="stat-info">
+                            <p>TIEMPO DE LECTURA</p>
+                        </div>
+                        <div class="stat-value">3h 20m</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">4</div>
+                        <div class="stat-info">
+                            <p>TEMA FAVORITO</p>
+                        </div>
+                        <div class="stat-value">AVENTURA</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de actividad -->
+            <div class="chart-card">
+                <h3>ACTIVIDAD MENSUAL</h3>
+                <div class="chart">
+                    <div class="chart-bar">
+                        <div class="chart-bar-value" style="height: 30%;"></div>
+                        <div class="chart-bar-label">S1</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-value" style="height: 45%;"></div>
+                        <div class="chart-bar-label">S2</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-value" style="height: 60%;"></div>
+                        <div class="chart-bar-label">S3</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-value" style="height: 75%;"></div>
+                        <div class="chart-bar-label">S4</div>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-value" style="height: 90%;"></div>
+                        <div class="chart-bar-label">S5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

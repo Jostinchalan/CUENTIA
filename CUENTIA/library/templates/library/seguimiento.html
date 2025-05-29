@@ -1,0 +1,276 @@
+{% extends "dashboard_base.html" %}
+{% load static %}
+
+{% block dashboard_css %}
+<link rel="stylesheet" href="{% static 'css/seguimiento.css' %}">
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="seguimiento-header">
+  <h1 class="seguimiento-title">Seguimiento Lector</h1>
+  <div class="seguimiento-select">
+    <select class="form-select">
+      <option value="all">Todos los perfiles</option>
+      <option value="1">María</option>
+      <option value="2">Miguel</option>
+      <option value="3">Cristina</option>
+    </select>
+  </div>
+</div>
+
+<div class="stats-cards">
+  <!-- Total de Cuentos -->
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <h3 class="stat-card-title">
+        <i class="fas fa-book-open stat-card-icon"></i>
+        Total de Cuentos
+      </h3>
+    </div>
+    <div class="stat-card-content">
+      <div class="stat-card-value">32</div>
+      <div class="stat-card-change">+8 este mes</div>
+    </div>
+  </div>
+
+  <!-- Tiempo de Lectura -->
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <h3 class="stat-card-title">
+        <i class="fas fa-clock stat-card-icon"></i>
+        Tiempo de Lectura
+      </h3>
+    </div>
+    <div class="stat-card-content">
+      <div class="stat-card-value">5h 45m</div>
+      <div class="stat-card-change">+1h 20m este mes</div>
+    </div>
+  </div>
+
+  <!-- Tema Favorito -->
+  <div class="stat-card">
+    <div class="stat-card-header">
+      <h3 class="stat-card-title">
+        <i class="fas fa-star stat-card-icon"></i>
+        Tema Favorito
+      </h3>
+    </div>
+    <div class="stat-card-content">
+      <div class="stat-card-value">Aventura</div>
+      <div class="stat-card-change">8 cuentos leídos</div>
+    </div>
+  </div>
+</div>
+
+<div class="seguimiento-tabs tabs">
+  <div class="seguimiento-tab tab active" data-toggle="tab" data-target="activity-tab">Actividad Reciente</div>
+  <div class="seguimiento-tab tab" data-toggle="tab" data-target="stats-tab">Estadísticas</div>
+  <div class="seguimiento-tab tab" data-toggle="tab" data-target="themes-tab">Temas Favoritos</div>
+</div>
+
+<!-- Activity tab -->
+<div id="activity-tab" class="tab-content active">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Actividad de Lectura</h2>
+    </div>
+    <div class="card-content">
+      <div class="activity-list">
+        <!-- Activity 1 -->
+        <div class="activity-item">
+          <div class="activity-item-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <div class="activity-item-content">
+            <div class="activity-item-header">
+              <h3 class="activity-item-title">ANA Y EL BOSQUE MÁGICO</h3>
+              <span class="activity-item-date">Hoy, 15:30</span>
+            </div>
+            <p class="activity-item-details">Lectura • 12 minutos</p>
+            <div class="activity-item-user">
+              <div class="activity-item-user-avatar">M</div>
+              <span class="activity-item-user-name">María</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity 2 -->
+        <div class="activity-item">
+          <div class="activity-item-icon">
+            <i class="fas fa-volume-up"></i>
+          </div>
+          <div class="activity-item-content">
+            <div class="activity-item-header">
+              <h3 class="activity-item-title">MI AMIGO ROBOT</h3>
+              <span class="activity-item-date">Ayer, 18:45</span>
+            </div>
+            <p class="activity-item-details">Audio • 8 minutos</p>
+            <div class="activity-item-user">
+              <div class="activity-item-user-avatar">M</div>
+              <span class="activity-item-user-name">Miguel</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity 3 -->
+        <div class="activity-item">
+          <div class="activity-item-icon">
+            <i class="fas fa-book-open"></i>
+          </div>
+          <div class="activity-item-content">
+            <div class="activity-item-header">
+              <h3 class="activity-item-title">LLUVIA DE LIBROS</h3>
+              <span class="activity-item-date">22/04/2024, 10:15</span>
+            </div>
+            <p class="activity-item-details">Lectura • 15 minutos</p>
+            <div class="activity-item-user">
+              <div class="activity-item-user-avatar">C</div>
+              <span class="activity-item-user-name">Cristina</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity 4 -->
+        <div class="activity-item">
+          <div class="activity-item-icon">
+            <i class="fas fa-volume-up"></i>
+          </div>
+          <div class="activity-item-content">
+            <div class="activity-item-header">
+              <h3 class="activity-item-title">EL VIAJE ESPACIAL</h3>
+              <span class="activity-item-date">20/04/2024, 19:20</span>
+            </div>
+            <p class="activity-item-details">Audio • 10 minutos</p>
+            <div class="activity-item-user">
+              <div class="activity-item-user-avatar">M</div>
+              <span class="activity-item-user-name">Miguel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Stats tab -->
+<div id="stats-tab" class="tab-content">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Estadísticas Mensuales</h2>
+    </div>
+    <div class="card-content">
+      <div class="chart-container">
+        <div class="chart-bars">
+          <div class="chart-bar">
+            <div class="chart-bar-value" style="height: 33%;"></div>
+            <div class="chart-bar-label">Enero</div>
+            <div class="chart-bar-count">5 cuentos</div>
+          </div>
+          <div class="chart-bar">
+            <div class="chart-bar-value" style="height: 53%;"></div>
+            <div class="chart-bar-label">Febrero</div>
+            <div class="chart-bar-count">8 cuentos</div>
+          </div>
+          <div class="chart-bar">
+            <div class="chart-bar-value" style="height: 80%;"></div>
+            <div class="chart-bar-label">Marzo</div>
+            <div class="chart-bar-count">12 cuentos</div>
+          </div>
+          <div class="chart-bar">
+            <div class="chart-bar-value" style="height: 67%;"></div>
+            <div class="chart-bar-label">Abril</div>
+            <div class="chart-bar-count">10 cuentos</div>
+          </div>
+          <div class="chart-bar">
+            <div class="chart-bar-value" style="height: 100%;"></div>
+            <div class="chart-bar-label">Mayo</div>
+            <div class="chart-bar-count">15 cuentos</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Themes tab -->
+<div id="themes-tab" class="tab-content">
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Temas Favoritos</h2>
+    </div>
+    <div class="card-content">
+      <div class="themes-list">
+        <!-- Theme 1 -->
+        <div class="theme-item">
+          <div class="theme-item-rank">1</div>
+          <div class="theme-item-content">
+            <div class="theme-item-header">
+              <span class="theme-item-title">Aventura</span>
+              <span class="theme-item-count">8 cuentos</span>
+            </div>
+            <div class="theme-item-bar">
+              <div class="theme-item-progress" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme 2 -->
+        <div class="theme-item">
+          <div class="theme-item-rank">2</div>
+          <div class="theme-item-content">
+            <div class="theme-item-header">
+              <span class="theme-item-title">Fantasía</span>
+              <span class="theme-item-count">6 cuentos</span>
+            </div>
+            <div class="theme-item-bar">
+              <div class="theme-item-progress" style="width: 75%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme 3 -->
+        <div class="theme-item">
+          <div class="theme-item-rank">3</div>
+          <div class="theme-item-content">
+            <div class="theme-item-header">
+              <span class="theme-item-title">Ciencia Ficción</span>
+              <span class="theme-item-count">5 cuentos</span>
+            </div>
+            <div class="theme-item-bar">
+              <div class="theme-item-progress" style="width: 62.5%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme 4 -->
+        <div class="theme-item">
+          <div class="theme-item-rank">4</div>
+          <div class="theme-item-content">
+            <div class="theme-item-header">
+              <span class="theme-item-title">Amistad</span>
+              <span class="theme-item-count">4 cuentos</span>
+            </div>
+            <div class="theme-item-bar">
+              <div class="theme-item-progress" style="width: 50%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Theme 5 -->
+        <div class="theme-item">
+          <div class="theme-item-rank">5</div>
+          <div class="theme-item-content">
+            <div class="theme-item-header">
+              <span class="theme-item-title">Animales</span>
+              <span class="theme-item-count">3 cuentos</span>
+            </div>
+            <div class="theme-item-bar">
+              <div class="theme-item-progress" style="width: 37.5%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
