@@ -1,5 +1,6 @@
 # user/email_utils.py (versión mejorada y simplificada)
-
+# user/email_utils.py (versión mejorada y simplificada)
+from django.core.mail import get_connection
 from django.core.mail import EmailMultiAlternatives, send_mail
 from django.template.loader import render_to_string
 from django.conf import settings
@@ -174,8 +175,6 @@ El equipo de {context['site_name']}
 def test_email_connection():
     """Función para probar la conexión de email"""
     try:
-        from django.core.mail import get_connection
-
         print("🔄 Probando conexión de email...")
         print(f"📧 Host: {settings.EMAIL_HOST}")
         print(f"📧 Port: {settings.EMAIL_PORT}")
@@ -192,4 +191,3 @@ def test_email_connection():
         print(f"❌ Error en conexión de email: {str(e)}")
         print(f"🔍 Traceback: {traceback.format_exc()}")
         return False
-

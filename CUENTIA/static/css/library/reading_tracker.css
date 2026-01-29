@@ -1,0 +1,1020 @@
+/* Estilos mejorados para el seguimiento lector - COMPATIBLE CON MODO CLARO/OSCURO */
+.tracker-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: transparent;
+}
+
+/* Encabezado morado estilo biblioteca */
+.page-title-banner {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.page-title-banner h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 100%;
+  color: white !important;
+}
+
+.page-subtitle-container {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.page-subtitle {
+  color: var(--text-secondary) !important;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Responsive para el título */
+@media (max-width: 768px) {
+  .page-title-banner {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title-banner h1 {
+    font-size: 1.6rem;
+    letter-spacing: 0.3px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title-banner {
+    padding: 1rem 0.5rem;
+  }
+
+  .page-title-banner h1 {
+    font-size: 1.3rem;
+    letter-spacing: 0.2px;
+  }
+}
+
+@media (max-width: 360px) {
+  .page-title-banner h1 {
+    font-size: 1.1rem;
+    letter-spacing: 0.1px;
+  }
+}
+
+/* Selector de período - USANDO VARIABLES CSS */
+.period-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.period-btn {
+  background-color: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  color: var(--text-primary) !important;
+}
+
+.period-btn:hover {
+  background-color: var(--hover-bg) !important;
+  transform: translateY(-2px);
+}
+
+.period-btn.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+  border-color: #8b5cf6 !important;
+}
+
+/* SECCIÓN DE PERFILES - USANDO VARIABLES CSS */
+.profiles-section-container {
+  margin-bottom: 30px;
+}
+
+.profiles-section-box {
+  background: var(--card-bg) !important;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color) !important;
+  position: relative;
+  overflow: hidden;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.profiles-section-box h2 {
+  font-size: 1.5rem;
+  color: var(--text-primary) !important;
+  margin-bottom: 30px;
+  text-align: left;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+/* Contenedor con scroll horizontal */
+.profiles-horizontal {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0 30px 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Estilos de la barra de scroll - USANDO VARIABLES CSS */
+.profiles-horizontal::-webkit-scrollbar {
+  height: 8px;
+}
+
+.profiles-horizontal::-webkit-scrollbar-track {
+  background: var(--hover-bg);
+  border-radius: 4px;
+}
+
+.profiles-horizontal::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.profiles-horizontal::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Perfil individual - USANDO VARIABLES CSS */
+.profile-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 140px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.profile-circle:hover {
+  background: rgba(124, 58, 237, 0.05) !important;
+  transform: translateY(-2px);
+  border-color: rgba(124, 58, 237, 0.1) !important;
+}
+
+.profile-circle.selected {
+  background: rgba(124, 58, 237, 0.08) !important;
+  border-color: #8b5cf6 !important;
+  transform: translateY(-2px);
+}
+
+/* Avatar del perfil */
+.profile-avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  margin-bottom: 15px;
+  box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.2);
+}
+
+.profile-avatar-circle.all-profiles {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.2);
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-circle.selected .profile-avatar-circle {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 4px 14px 0 rgba(124, 58, 237, 0.3);
+  transform: scale(1.05);
+}
+
+.profile-circle:hover .profile-avatar-circle {
+  transform: scale(1.03);
+  box-shadow: 0 6px 20px 0 rgba(124, 58, 237, 0.25);
+}
+
+/* Información del perfil - USANDO VARIABLES CSS */
+.profile-name-age {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-primary) !important;
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.profile-age {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #7c3aed !important;
+  font-weight: 600;
+  background: rgba(124, 58, 237, 0.1) !important;
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+
+.profile-circle.selected .profile-name {
+  color: #7c3aed !important;
+  font-weight: 800;
+}
+
+.profile-circle.selected .profile-age {
+  background: #7c3aed !important;
+  color: white !important;
+  border-color: #7c3aed !important;
+}
+
+/* Texto de deslizar */
+.scroll-hint {
+  text-align: center;
+  color: var(--text-secondary) !important;
+  font-size: 0.9rem;
+  font-style: italic;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+/* Responsive para la sección de perfiles */
+@media (max-width: 768px) {
+  .profiles-section-box {
+    padding: 24px 20px;
+  }
+
+  .profiles-horizontal {
+    gap: 16px;
+    padding: 16px 0 24px 0;
+  }
+
+  .profile-circle {
+    min-width: 120px;
+    padding: 16px;
+  }
+
+  .profile-avatar-circle {
+    width: 70px;
+    height: 70px;
+  }
+
+  .profile-name {
+    font-size: 0.85rem;
+  }
+
+  .profile-age {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profiles-section-box {
+    padding: 20px 16px;
+    margin: 0 8px;
+  }
+
+  .profiles-section-box h2 {
+    font-size: 1.25rem;
+    margin-bottom: 24px;
+  }
+
+  .profiles-horizontal {
+    gap: 14px;
+    padding: 14px 0 20px 0;
+  }
+
+  .profile-circle {
+    min-width: 110px;
+    padding: 14px;
+  }
+
+  .profile-avatar-circle {
+    width: 65px;
+    height: 65px;
+  }
+
+  .profile-name {
+    font-size: 0.8rem;
+  }
+
+  .profile-age {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+}
+
+/* Estadísticas principales - USANDO VARIABLES CSS */
+.main-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 1024px) {
+  .main-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.stat-card {
+  background: var(--card-bg) !important;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color) !important;
+  transition: all 0.3s ease;
+  min-width: 0;
+  min-height: 120px;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-right: 18px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  flex-shrink: 0;
+}
+
+.stat-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-content h3 {
+  font-size: 2rem;
+  color: var(--text-primary) !important;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.stat-content p {
+  color: var(--text-secondary) !important;
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.stat-change {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.stat-change.positive {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.stat-change.negative {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.stat-change.neutral {
+  color: var(--text-secondary);
+  background: rgba(107, 114, 128, 0.1);
+}
+
+/* Responsive para stat cards */
+@media (max-width: 768px) {
+  .stat-card {
+    padding: 20px;
+    min-height: 100px;
+  }
+
+  .stat-icon {
+    font-size: 2.2rem;
+    margin-right: 16px;
+  }
+
+  .stat-content h3 {
+    font-size: 1.75rem;
+  }
+
+  .stat-content p {
+    font-size: 0.9rem;
+  }
+
+  .stat-change {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-card {
+    padding: 18px;
+    min-height: 90px;
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    margin-right: 14px;
+  }
+
+  .stat-content h3 {
+    font-size: 1.5rem;
+  }
+
+  .stat-content p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Sección de gráficas - USANDO VARIABLES CSS */
+.charts-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.chart-container {
+  background: var(--card-bg) !important;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: var(--shadow);
+  position: relative;
+  border: 1px solid var(--border-color) !important;
+}
+
+.chart-container.full-width {
+  grid-column: 1 / -1;
+}
+
+.chart-header {
+  margin-bottom: 20px;
+}
+
+.chart-header h3 {
+  font-size: 1.3rem;
+  color: var(--text-primary) !important;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+}
+
+.chart-header p {
+  color: var(--text-secondary) !important;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Estilos para gráficos D3 */
+.bar {
+  fill: #7c3aed;
+  transition: fill 0.2s;
+}
+
+.bar:hover {
+  fill: #8b5cf6;
+}
+
+.line {
+  fill: none;
+  stroke: #7c3aed;
+  stroke-width: 3;
+}
+
+.dot {
+  fill: #7c3aed;
+  transition: r 0.2s;
+}
+
+.dot:hover {
+  r: 6;
+}
+
+.axis path,
+.axis line {
+  stroke: var(--border-color);
+}
+
+.axis text {
+  fill: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.tooltip {
+  position: absolute;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  pointer-events: none;
+  z-index: 1000;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border-color);
+}
+
+/* Sección de exportación */
+.export-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.export-btn {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+}
+
+.export-btn:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+.export-btn svg {
+  width: 22px;
+  height: 22px;
+  margin-right: 10px;
+}
+
+/* Indicador de carga - USANDO VARIABLES CSS */
+.chart-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  z-index: 10;
+  opacity: 0.95;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid #7c3aed;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Responsive general */
+@media (max-width: 768px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
+
+  .main-stats {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .profiles-section-box {
+    padding: 20px;
+  }
+
+  .profiles-horizontal {
+    gap: 15px;
+  }
+
+  .profile-circle {
+    min-width: 90px;
+    padding: 12px;
+  }
+
+  .profile-avatar-circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .profile-name {
+    font-size: 0.875rem;
+  }
+
+  .profile-age {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tracker-container {
+    padding: 15px;
+  }
+
+  .profiles-horizontal {
+    justify-content: center;
+  }
+}
+
+/* ASEGURAR QUE TODOS LOS ELEMENTOS USEN LAS VARIABLES CSS */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
+
+/* Forzar el uso de variables en elementos específicos */
+.tracker-container * {
+  color: inherit;
+  background-color: inherit;
+}
+
+/* Asegurar que los textos usen las variables correctas */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary) !important;
+}
+
+p,
+span,
+div {
+  color: var(--text-primary);
+}
+
+/* Asegurar que los fondos usen las variables correctas */
+.profiles-section-box,
+.stat-card,
+.chart-container {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* Botones que deben usar las variables */
+.period-btn {
+  background: var(--card-bg) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.period-btn:hover {
+  background: var(--hover-bg) !important;
+}
+
+/* Asegurar que los elementos de scroll usen las variables */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--hover-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Mantener estos elementos con colores específicos */
+.page-title-banner,
+.page-title-banner * {
+  color: white !important;
+}
+
+.export-btn {
+  color: white !important;
+}
+
+.period-btn.active {
+  color: white !important;
+}
+
+.profile-circle.selected .profile-age {
+  color: white !important;
+}
+
+/* Forzar que el contenedor principal use colores claros */
+.light-theme-forced {
+  background-color: #f5f5f5 !important;
+  color: #333333 !important;
+}
+
+/* Forzar fondos blancos para todas las secciones */
+.light-theme-forced .profiles-section-box {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #333333 !important;
+}
+
+.light-theme-forced .profiles-section-box h2 {
+  color: #333333 !important;
+}
+
+/* Forzar fondos blancos para las tarjetas de estadísticas */
+.light-theme-forced .stat-card {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #333333 !important;
+}
+
+.light-theme-forced .stat-content h3 {
+  color: #333333 !important;
+}
+
+.light-theme-forced .stat-content p {
+  color: #666666 !important;
+}
+
+/* Forzar fondos blancos para los contenedores de gráficas */
+.light-theme-forced .chart-container {
+  background: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+  color: #333333 !important;
+}
+
+.light-theme-forced .chart-header h3 {
+  color: #333333 !important;
+}
+
+.light-theme-forced .chart-header p {
+  color: #666666 !important;
+}
+
+/* Forzar colores claros para los botones de período */
+.light-theme-forced .period-btn {
+  background: #ffffff !important;
+  color: #333333 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.light-theme-forced .period-btn:hover {
+  background: #f3f4f6 !important;
+}
+
+.light-theme-forced .period-btn.active {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%) !important;
+  color: white !important;
+  border-color: #8b5cf6 !important;
+}
+
+/* Forzar colores claros para los nombres de perfiles */
+.light-theme-forced .profile-name {
+  color: #333333 !important;
+}
+
+/* Forzar colores claros para elementos de texto */
+.light-theme-forced h1,
+.light-theme-forced h2,
+.light-theme-forced h3,
+.light-theme-forced h4,
+.light-theme-forced h5,
+.light-theme-forced h6 {
+  color: #333333 !important;
+}
+
+.light-theme-forced p,
+.light-theme-forced span,
+.light-theme-forced div {
+  color: #333333 !important;
+}
+
+/* Elementos específicos que necesitan colores secundarios */
+.light-theme-forced .page-subtitle,
+.light-theme-forced .chart-header p,
+.light-theme-forced .stat-content p,
+.light-theme-forced .scroll-hint {
+  color: #666666 !important;
+}
+
+/* Forzar colores claros para elementos de gráficas */
+.light-theme-forced .axis text {
+  fill: #666666 !important;
+}
+
+.light-theme-forced .axis path,
+.light-theme-forced .axis line {
+  stroke: #e5e7eb !important;
+}
+
+.light-theme-forced .tooltip {
+  background: #333333 !important;
+  color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.light-theme-forced .no-data {
+  color: #666666 !important;
+}
+
+/* Indicador de carga */
+.light-theme-forced .chart-loader {
+  background-color: #ffffff !important;
+}
+
+.light-theme-forced .spinner {
+  border-color: #e5e7eb !important;
+  border-top-color: #7c3aed !important;
+}
+
+/* Barras de scroll */
+.light-theme-forced .profiles-horizontal::-webkit-scrollbar-track {
+  background: #f3f4f6 !important;
+}
+
+.light-theme-forced .profiles-horizontal::-webkit-scrollbar-thumb {
+  background: #e5e7eb !important;
+}
+
+.light-theme-forced .profiles-horizontal::-webkit-scrollbar-thumb:hover {
+  background: #666666 !important;
+}
+
+/* Mantener elementos que deben ser de colores específicos */
+.light-theme-forced .page-title-banner,
+.light-theme-forced .page-title-banner * {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+  color: white !important;
+}
+
+.light-theme-forced .export-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%) !important;
+  color: white !important;
+}
+
+.light-theme-forced .profile-age {
+  color: #7c3aed !important;
+  background: rgba(124, 58, 237, 0.1) !important;
+  border: 1px solid rgba(124, 58, 237, 0.2) !important;
+}
+
+.light-theme-forced .profile-circle.selected .profile-age {
+  background: #7c3aed !important;
+  color: white !important;
+  border-color: #7c3aed !important;
+}
+
+/* Asegurar que TODOS los elementos hereden los colores claros */
+.light-theme-forced * {
+  color: inherit !important;
+}
+
+/* Sobrescribir cualquier color oscuro que pueda estar aplicándose */
+.light-theme-forced
+  *:not(.page-title-banner):not(.page-title-banner *):not(.export-btn):not(.period-btn.active):not(
+    .profile-circle.selected .profile-age
+  ) {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+/* Forzar colores específicos para elementos que podrían tener CSS conflictivo */
+.light-theme-forced .profiles-section-container {
+  background: transparent !important;
+}
+
+.light-theme-forced .main-stats {
+  background: transparent !important;
+}
+
+.light-theme-forced .charts-section {
+  background: transparent !important;
+}
+
+.light-theme-forced .export-section {
+  background: transparent !important;
+}
+
+/* Asegurar que los inputs y selects también usen colores claros */
+.light-theme-forced input,
+.light-theme-forced select,
+.light-theme-forced textarea {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+.light-theme-forced input::placeholder {
+  color: #666666 !important;
+}
+
+/* Forzar colores para cualquier elemento que pueda estar usando variables CSS incorrectas */
+.light-theme-forced .profile-circle {
+  color: #333333 !important;
+}
+
+.light-theme-forced .profile-circle:hover {
+  background: rgba(124, 58, 237, 0.05) !important;
+}
+
+.light-theme-forced .profile-circle.selected {
+  background: rgba(124, 58, 237, 0.08) !important;
+}
+
+/* Asegurar que los cambios de estadísticas usen colores apropiados */
+.light-theme-forced .stat-change.positive {
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+
+.light-theme-forced .stat-change.negative {
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.light-theme-forced .stat-change.neutral {
+  color: #666666 !important;
+  background: rgba(107, 114, 128, 0.1) !important;
+}

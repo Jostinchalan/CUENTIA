@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block title %}Crear Cuento - CuentIA{% endblock %}
 {% block content %}
 <div class="story-generator-page">
-    <!-- Encabezado -->
-    <div class="page-header">
-        <h1>Generar Cuento</h1>
-        <p>Crea cuentos personalizados para los niños</p>
+    <!-- Encabezado morado estilo biblioteca -->
+    <div class="page-title-banner">
+        <h1>GENERAR CUENTO</h1>
     </div>
 
     <!-- Selector de perfiles -->
@@ -15,47 +14,24 @@
         <div class="profiles-carousel">
             {% for perfil in perfiles %}
                 <div class="profile-card" data-perfil-id="{{ perfil.id }}" onclick="seleccionarPerfil({{ perfil.id }})">
-                    <div class="profile-avatar">
-                        {% if perfil.genero == 'M' %}
-                            <div class="avatar-circle avatar-boy">
-                                <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-                                    <circle cx="50" cy="40" r="15" fill="#FDBCB4"/>
-                                    <path d="M35 25 C35 15, 65 15, 65 25 L65 35 C65 45, 35 45, 35 35 Z" fill="#8B4513"/>
-                                    <circle cx="45" cy="38" r="2" fill="#000"/>
-                                    <circle cx="55" cy="38" r="2" fill="#000"/>
-                                    <path d="M45 45 Q50 50 55 45" stroke="#000" stroke-width="1.5" fill="none"/>
-                                    <rect x="40" y="55" width="20" height="25" rx="10" fill="#4F46E5"/>
-                                </svg>
-                            </div>
-                        {% elif perfil.genero == 'F' %}
-                            <div class="avatar-circle avatar-girl">
-                                <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-                                    <circle cx="50" cy="40" r="15" fill="#FDBCB4"/>
-                                    <path d="M30 25 C30 10, 70 10, 70 25 L70 40 C70 50, 30 50, 30 40 Z" fill="#8B4513"/>
-                                    <circle cx="25" cy="30" r="8" fill="#8B4513"/>
-                                    <circle cx="75" cy="30" r="8" fill="#8B4513"/>
-                                    <circle cx="45" cy="38" r="2" fill="#000"/>
-                                    <circle cx="55" cy="38" r="2" fill="#000"/>
-                                    <path d="M45 45 Q50 50 55 45" stroke="#000" stroke-width="1.5" fill="none"/>
-                                    <rect x="40" y="55" width="20" height="25" rx="10" fill="#EC4899"/>
-                                </svg>
-                            </div>
+                    <div class="profile-image-container">
+                        {% if perfil.foto_perfil %}
+                            <img src="{{ perfil.foto_perfil.url }}" alt="{{ perfil.nombre }}" class="profile-image">
                         {% else %}
-                            <div class="avatar-circle avatar-neutral">
-                                <svg width="40" height="40" viewBox="0 0 100 100" fill="none">
-                                    <circle cx="50" cy="40" r="15" fill="#FDBCB4"/>
-                                    <path d="M35 25 C35 15, 65 15, 65 25 L65 35 C65 45, 35 45, 35 35 Z" fill="#8B4513"/>
-                                    <circle cx="45" cy="38" r="2" fill="#000"/>
-                                    <circle cx="55" cy="38" r="2" fill="#000"/>
-                                    <path d="M45 45 Q50 50 55 45" stroke="#000" stroke-width="1.5" fill="none"/>
-                                    <rect x="40" y="55" width="20" height="25" rx="10" fill="#10B981"/>
-                                </svg>
-                            </div>
+                            <!-- Imagen por defecto si no tiene foto -->
+                            <img src="{% static 'images/robot1.png' %}" alt="{{ perfil.nombre }}" class="profile-image">
                         {% endif %}
                     </div>
-                    <div class="profile-name">{{ perfil.nombre }}</div>
+                    <div class="profile-info">
+                        <div class="profile-name" title="{{ perfil.nombre }}">{{ perfil.nombre|upper }}</div>
+                        <div class="profile-age">{{ perfil.edad }} años</div>
+                    </div>
                 </div>
             {% endfor %}
+        </div>
+        <!-- Indicador de scroll -->
+        <div class="scroll-indicator">
+            <span>← Desliza para ver más perfiles →</span>
         </div>
     </div>
 
@@ -132,138 +108,211 @@
 </div>
 
 <style>
-/* Estilos generales */
+/* Usar variables CSS del modo oscuro */
 .story-generator-page {
-    background: #f1f5f9;
+    background: var(--bg-primary);
     padding: 2rem;
-    min-height: 100vh;
+    min-height: calc(100vh - 120px);
+    color: var(--text-primary);
 }
 
-.page-header {
+/* Encabezado morado estilo biblioteca */
+.page-title-banner {
+    background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 16px;
     margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.page-header h1 {
-    font-size: 2rem;
+.page-title-banner h1 {
+    font-size: 2.5rem;
     font-weight: 700;
-    color: #374151;
-    margin-bottom: 0.5rem;
-}
-
-.page-header p {
-    color: #6b7280;
-    font-size: 1.1rem;
+    margin: 0;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Selector de perfiles */
 .profiles-selector {
-    background: white;
+    background: var(--card-bg);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
+    position: relative;
 }
 
 .profiles-selector h2 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 1rem;
 }
 
 .profiles-carousel {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     overflow-x: auto;
-    padding: 0.5rem 0;
-    scrollbar-width: thin;
-    scrollbar-color: #8B5CF6 #e2e8f0;
+    overflow-y: hidden;
+    padding: 1rem 0 1.5rem 0;
+    /* Barra de scroll más visible */
+    scrollbar-width: thick;
+    scrollbar-color: #8B5CF6 #e5e7eb;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
 }
 
+/* Estilos mejorados para la barra de scroll */
 .profiles-carousel::-webkit-scrollbar {
-    height: 6px;
+    height: 12px;
 }
 
 .profiles-carousel::-webkit-scrollbar-track {
-    background: #e2e8f0;
-    border-radius: 3px;
+    background: #f1f5f9;
+    border-radius: 6px;
+    margin: 0 10px;
 }
 
 .profiles-carousel::-webkit-scrollbar-thumb {
-    background: #8B5CF6;
-    border-radius: 3px;
+    background: linear-gradient(90deg, #8B5CF6, #7C3AED);
+    border-radius: 6px;
+    border: 2px solid #f1f5f9;
+}
+
+.profiles-carousel::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, #7C3AED, #6D28D9);
+}
+
+.profiles-carousel::-webkit-scrollbar-corner {
+    background: #f1f5f9;
 }
 
 .profile-card {
-    min-width: 80px;
+    min-width: 150px;
+    max-width: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0.75rem;
-    border-radius: 12px;
+    padding: 1.25rem;
+    border-radius: 16px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    background: var(--card-bg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* Evita que se compriman */
 }
 
 .profile-card:hover {
-    background: #f3f4f6;
-    transform: translateY(-2px);
+    background: var(--hover-bg);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
 }
 
 .profile-card.selected {
-    background: #ede9fe;
+    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
     border: 2px solid #8B5CF6;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.3);
 }
 
-.profile-avatar {
-    margin-bottom: 0.5rem;
-}
-
-.avatar-circle {
-    width: 50px;
-    height: 50px;
+.profile-image-container {
+    margin-bottom: 1rem;
+    position: relative;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgba(139, 92, 246, 0.5);
+    overflow: hidden;
+    border: 3px solid rgba(139, 92, 246, 0.3);
+    transition: all 0.3s ease;
 }
 
-.avatar-boy {
-    background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+.profile-card:hover .profile-image-container {
+    border-color: rgba(139, 92, 246, 0.6);
+    transform: scale(1.05);
 }
 
-.avatar-girl {
-    background: linear-gradient(135deg, #FCE7F3 0%, #FBCFE8 100%);
+.profile-card.selected .profile-image-container {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
 }
 
-.avatar-neutral {
-    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block; /* Asegurar que se muestre */
+}
+
+.profile-info {
+    text-align: center;
+    width: 100%;
 }
 
 .profile-name {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #374151;
-    text-align: center;
-    max-width: 80px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 130px;
+    letter-spacing: 0.5px;
+}
+
+.profile-age {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    background: rgba(139, 92, 246, 0.15);
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    display: inline-block;
+    border: 1px solid rgba(139, 92, 246, 0.2);
+}
+
+.profile-card.selected .profile-age {
+    background: rgba(139, 92, 246, 0.25);
+    color: #8B5CF6;
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* Indicador de scroll */
+.scroll-indicator {
+    text-align: center;
+    margin-top: 0.5rem;
+    opacity: 0.7;
+}
+
+.scroll-indicator span {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    background: rgba(139, 92, 246, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    display: inline-block;
 }
 
 /* Formulario */
 .story-form-container {
-    background: white;
+    background: var(--card-bg);
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-color);
 }
 
 .story-form-container h2 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 1.5rem;
 }
 
@@ -282,21 +331,27 @@
 .form-group label {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
 }
 
 .form-control {
     padding: 0.75rem 1rem;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.2s;
+    background-color: var(--input-bg);
+    color: var(--text-primary);
 }
 
 .form-control:focus {
     outline: none;
     border-color: #8B5CF6;
     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.form-control::placeholder {
+    color: var(--text-secondary);
 }
 
 .custom-select-container {
@@ -326,7 +381,7 @@
     width: 1.25rem;
     height: 1.25rem;
     border-radius: 4px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     cursor: pointer;
     accent-color: #8B5CF6;
 }
@@ -355,9 +410,9 @@
 }
 
 .btn-clear {
-    background: #6B7280;
-    color: white;
-    border: none;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
     padding: 0.875rem 1.5rem;
     border-radius: 8px;
     font-weight: 600;
@@ -366,7 +421,7 @@
 }
 
 .btn-clear:hover {
-    background: #4B5563;
+    background: var(--hover-bg);
 }
 
 /* Responsive */
@@ -375,12 +430,56 @@
         padding: 1rem;
     }
 
+    .page-title-banner {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .page-title-banner h1 {
+        font-size: 2rem;
+    }
+
     .form-actions {
         flex-direction: column;
     }
 
     .profile-card {
-        min-width: 70px;
+        min-width: 130px;
+        max-width: 130px;
+    }
+
+    .profile-image-container {
+        width: 70px;
+        height: 70px;
+    }
+
+    .profiles-carousel {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title-banner h1 {
+        font-size: 1.5rem;
+    }
+
+    .profile-card {
+        min-width: 120px;
+        max-width: 120px;
+        padding: 1rem;
+    }
+
+    .profile-image-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-name {
+        font-size: 0.9rem;
+    }
+
+    .profile-age {
+        font-size: 0.75rem;
     }
 }
 </style>

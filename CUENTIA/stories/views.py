@@ -1,4 +1,3 @@
-# stories/views.py
 import json
 import logging
 from django.shortcuts import render, redirect, get_object_or_404
@@ -16,6 +15,52 @@ import threading
 import time
 
 logger = logging.getLogger(__name__)
+
+
+@login_required
+def generated_story_view(request, cuento_id):
+    """Vista para mostrar el cuento generado - SIN GUARDAR AUTOMÁTICAMENTE"""
+    try:
+        cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
+
+        logger.info(f"Mostrando cuento {cuento_id} con estado: {cuento.estado}")
+
+        if cuento.estado == 'generando':
+            return redirect('stories:generando')
+        elif cuento.estado == 'error':
+            messages.error(request, 'Hubo un error generando el cuento. Inténtalo de nuevo.')
+            return redirect('stories:generar')
+
+        # Marcar como leído
+        cuento.marcar_como_leido()
+
+        # Verificar que el cuento tenga contenido para TTS
+        if not cuento.contenido or not cuento.contenido.strip():
+            logger.warning(f"Cuento {cuento_id} no tiene contenido para TTS")
+
+        # SOLO registrar estadística de lectura si está en biblioteca
+        if cuento.en_biblioteca:
+            EstadisticaLectura.objects.create(
+                usuario=request.user,
+                cuento=cuento,
+                perfil=cuento.perfil,
+                tipo_lectura='texto'
+            )
+
+        # Limpiar sesión
+        if 'cuento_id' in request.session:
+            del request.session['cuento_id']
+        if 'datos_generacion' in request.session:
+            del request.session['datos_generacion']
+
+        return render(request, 'stories/generated_story.html', {
+            'cuento': cuento
+        })
+
+    except Exception as e:
+        logger.error(f"Error en generated_story_view: {str(e)}")
+        messages.error(request, 'Ocurrió un error al cargar el cuento.')
+        return redirect('stories:generar')
 
 
 @login_required
@@ -97,15 +142,25 @@ def generar_cuento_view(request):
                 except Perfil.DoesNotExist:
                     pass
 
-            # Crear el cuento en estado "generando"
+            # Obtener el perfil si existe
+            perfil = None
+            if perfil_id:
+                try:
+                    perfil = Perfil.objects.get(id=perfil_id, usuario=request.user)
+                except Perfil.DoesNotExist:
+                    perfil = None
+
+            # Crear el cuento en estado "generando" SIN guardarlo en biblioteca
             cuento = Cuento.objects.create(
                 usuario=request.user,
+                perfil=perfil,
                 titulo=datos_formulario['titulo'] or 'Cuento Mágico',
                 personaje_principal=datos_formulario['personaje_principal'],
                 tema=datos_formulario['tema'],
                 edad=datos_formulario['edad'],
                 longitud=datos_formulario['longitud'],
-                estado='generando'
+                estado='generando',
+                en_biblioteca=False  # NO guardarlo automáticamente
             )
 
             logger.info(f"Cuento creado con ID: {cuento.id} para usuario: {request.user.username}")
@@ -115,9 +170,8 @@ def generar_cuento_view(request):
                 try:
                     logger.info(f"Iniciando generacion de cuento ID: {cuento.id}")
 
-                    # Generar el cuento completo con IA
                     titulo, contenido, moraleja, imagen_url, imagen_prompt = openai_service.generar_cuento_completo(
-                        datos_formulario)
+                        datos_formulario, user=request.user)
 
                     # Actualizar el cuento
                     cuento.titulo = titulo
@@ -127,9 +181,9 @@ def generar_cuento_view(request):
                     cuento.imagen_prompt = imagen_prompt
                     cuento.estado = 'completado'
 
-                    # Calcular tiempo estimado de lectura (aproximadamente 200 palabras por minuto)
+                    # Calcular tiempo estimado de lectura
                     palabras = len(contenido.split())
-                    cuento.tiempo_lectura_estimado = max(60, (palabras / 200) * 60)  # mínimo 1 minuto
+                    cuento.tiempo_lectura_estimado = max(60, (palabras / 200) * 60)
 
                     cuento.save()
 
@@ -165,7 +219,6 @@ def generar_cuento_view(request):
     })
 
 
-# ... resto de las vistas permanecen igual ...
 @login_required
 def generando_cuento_view(request):
     """Vista para la página de carga mientras se genera el cuento"""
@@ -240,98 +293,94 @@ def check_cuento_status(request, cuento_id):
 
 
 @login_required
-def generated_story_view(request, cuento_id):
-    """Vista para mostrar el cuento generado"""
-    try:
-        cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
-
-        logger.info(f"Mostrando cuento {cuento_id} con estado: {cuento.estado}")
-
-        if cuento.estado == 'generando':
-            return redirect('stories:generando')
-        elif cuento.estado == 'error':
-            messages.error(request, 'Hubo un error generando el cuento. Inténtalo de nuevo.')
-            return redirect('stories:generar')
-
-        # Marcar como leído
-        cuento.marcar_como_leido()
-
-        # Verificar que el cuento tenga contenido para TTS
-        if not cuento.contenido or not cuento.contenido.strip():
-            logger.warning(f"Cuento {cuento_id} no tiene contenido para TTS")
-
-        # Registrar estadística de lectura
-        EstadisticaLectura.objects.create(
-            usuario=request.user,
-            cuento=cuento,
-            tipo_lectura='texto'
-        )
-
-        # Limpiar sesión
-        if 'cuento_id' in request.session:
-            del request.session['cuento_id']
-        if 'datos_generacion' in request.session:
-            del request.session['datos_generacion']
-
-        return render(request, 'stories/generated_story.html', {
-            'cuento': cuento
-        })
-
-    except Exception as e:
-        logger.error(f"Error en generated_story_view: {str(e)}")
-        messages.error(request, 'Ocurrió un error al cargar el cuento.')
-        return redirect('stories:generar')
-
-
-@login_required
-def lista_cuentos_view(request):
-    """Vista para listar todos los cuentos del usuario"""
-    cuentos = Cuento.objects.filter(
-        usuario=request.user
-    ).order_by('-fecha_creacion')
-
-    return render(request, 'stories/lista_cuentos.html', {
-        'cuentos': cuentos
-    })
-
-
-@login_required
 def descargar_pdf_view(request, cuento_id):
-    """Vista para descargar el cuento en PDF"""
+    """Vista para descargar el cuento en PDF - VERSIÓN COMPLETAMENTE CORREGIDA"""
     try:
+        # Obtener el cuento
         cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
+
+        logger.info(f"🔽 DESCARGA PDF - Cuento ID: {cuento_id}, Título: {cuento.titulo}")
+        logger.info(f"🔽 Usuario: {request.user.username}")
+        logger.info(f"🔽 Estado del cuento: {cuento.estado}")
+
+        # Verificar que el cuento esté completado
+        if cuento.estado != 'completado':
+            logger.error(f"❌ Cuento {cuento_id} no está completado, estado: {cuento.estado}")
+            messages.error(request, 'El cuento no está listo para descargar.')
+            return redirect('stories:generated_story', cuento_id=cuento_id)
+
+        # Verificar que tenga contenido
+        if not cuento.contenido or not cuento.contenido.strip():
+            logger.error(f"❌ Cuento {cuento_id} no tiene contenido")
+            messages.error(request, 'El cuento no tiene contenido para descargar.')
+            return redirect('stories:generated_story', cuento_id=cuento_id)
+
+        logger.info(f"✅ Cuento válido para descarga - Contenido: {len(cuento.contenido)} caracteres")
 
         # Generar PDF
-        pdf_buffer = generar_pdf_cuento(cuento)
+        try:
+            logger.info(f"📄 Generando PDF para: {cuento.titulo}")
+            pdf_buffer = generar_pdf_cuento(cuento)
 
-        # Crear respuesta HTTP
-        response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{cuento.titulo}.pdf"'
+            if not pdf_buffer:
+                raise Exception("PDF buffer is None")
+
+            pdf_content = pdf_buffer.getvalue()
+
+            if not pdf_content:
+                raise Exception("PDF content is empty")
+
+            logger.info(f"✅ PDF generado exitosamente, tamaño: {len(pdf_content)} bytes")
+
+        except Exception as pdf_error:
+            logger.error(f"❌ Error generando PDF: {str(pdf_error)}")
+            import traceback
+            logger.error(f"❌ Traceback: {traceback.format_exc()}")
+            messages.error(request, 'Error al generar el archivo PDF.')
+            return redirect('stories:generated_story', cuento_id=cuento_id)
+
+        # Crear respuesta HTTP con headers correctos para FORZAR DESCARGA
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+
+        # Nombre de archivo seguro (sin caracteres especiales)
+        titulo_limpio = cuento.titulo.replace(' ', '_').replace('/', '_').replace('\\', '_')
+        titulo_limpio = ''.join(c for c in titulo_limpio if c.isalnum() or c in ['_', '-'])
+        filename = f"CuentIA_{titulo_limpio}.pdf"
+
+        # Headers CRÍTICOS para forzar descarga
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        response['Content-Type'] = 'application/pdf'
+        response['Content-Length'] = len(pdf_content)
+        response['Cache-Control'] = 'no-cache, no-store, must-revalidate, private'
+        response['Pragma'] = 'no-cache'
+        response['Expires'] = '0'
+
+        # Headers adicionales para asegurar descarga
+        response['X-Content-Type-Options'] = 'nosniff'
+        response['Content-Transfer-Encoding'] = 'binary'
+
+        # Registrar estadística de descarga
+        try:
+            EstadisticaLectura.objects.create(
+                usuario=request.user,
+                cuento=cuento,
+                perfil=cuento.perfil,
+                tipo_lectura='descarga'
+            )
+            logger.info(f"📊 Estadística de descarga registrada para cuento {cuento_id}")
+        except Exception as stats_error:
+            logger.warning(f"⚠️ Error registrando estadística de descarga: {str(stats_error)}")
+
+        logger.info(f"🎉 PDF listo para descarga: {filename}")
+        logger.info(f"🎉 Headers de respuesta: {dict(response.items())}")
 
         return response
 
     except Exception as e:
-        logger.error(f"Error generando PDF: {str(e)}")
-        messages.error(request, 'Error al generar el PDF.')
-        return redirect('stories:generated_story', cuento_id=cuento_id)
-
-
-@login_required
-@require_POST
-def guardar_biblioteca_view(request, cuento_id):
-    """Vista para guardar el cuento en la biblioteca"""
-    try:
-        cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
-
-        # El cuento ya está guardado automáticamente, solo confirmar
-        messages.success(request, f'¡Cuento "{cuento.titulo}" guardado en tu biblioteca!')
-
-        # Redirigir a la biblioteca
-        return redirect('library:biblioteca')
-
-    except Exception as e:
-        logger.error(f"Error guardando en biblioteca: {str(e)}")
-        messages.error(request, 'Error al guardar en la biblioteca.')
+        logger.error(f"❌ Error general en descarga PDF: {str(e)}")
+        import traceback
+        logger.error(f"❌ Traceback completo: {traceback.format_exc()}")
+        messages.error(request, f'Error al descargar el cuento: {str(e)}')
         return redirect('stories:generated_story', cuento_id=cuento_id)
 
 
@@ -354,4 +403,90 @@ def toggle_favorito_view(request, cuento_id):
         return JsonResponse({
             'success': False,
             'message': 'Error al actualizar favorito'
+        })
+
+
+@login_required
+@require_POST
+def guardar_biblioteca_view(request, cuento_id):
+    """Vista para guardar el cuento en la biblioteca - CON CONFIRMACIÓN"""
+    try:
+        cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
+
+        # Verificar si ya está en biblioteca
+        if cuento.en_biblioteca:
+            return JsonResponse({
+                'success': True,
+                'already_saved': True,
+                'message': f'El cuento "{cuento.titulo}" ya está en tu biblioteca.'
+            })
+
+        # Guardar en biblioteca
+        cuento.guardar_en_biblioteca()
+
+        # Registrar estadística
+        EstadisticaLectura.objects.create(
+            usuario=request.user,
+            cuento=cuento,
+            perfil=cuento.perfil,
+            tipo_lectura='biblioteca'
+        )
+
+        logger.info(f"Cuento guardado en biblioteca: {cuento.titulo} por {request.user.username}")
+
+        return JsonResponse({
+            'success': True,
+            'message': f'¡Cuento "{cuento.titulo}" guardado en tu biblioteca!',
+            'redirect_url': '/library/'
+        })
+
+    except Exception as e:
+        logger.error(f"Error guardando en biblioteca: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': 'Error al guardar en la biblioteca.'
+        })
+
+
+@login_required
+@require_POST
+def eliminar_cuento(request, cuento_id):
+    """Vista para eliminar un cuento"""
+    try:
+        cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
+        titulo = cuento.titulo
+
+        # Eliminar el cuento
+        cuento.delete()
+
+        return JsonResponse({
+            'success': True,
+            'message': f'Cuento "{titulo}" eliminado correctamente'
+        })
+
+    except Exception as e:
+        logger.error(f"Error al eliminar cuento {cuento_id}: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': f'Error al eliminar el cuento: {str(e)}'
+        })
+
+
+@login_required
+def obtener_contenido_cuento(request, cuento_id):
+    """Vista para obtener el contenido de un cuento para reproducción"""
+    try:
+        cuento = get_object_or_404(Cuento, id=cuento_id, usuario=request.user)
+
+        return JsonResponse({
+            'success': True,
+            'contenido': cuento.contenido,
+            'titulo': cuento.titulo
+        })
+
+    except Exception as e:
+        logger.error(f"Error al obtener contenido del cuento {cuento_id}: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'message': f'Error al obtener el contenido: {str(e)}'
         })

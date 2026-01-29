@@ -1,12 +1,26 @@
 /* ===================================
-   GENERATED STORY STYLES - MODERN CARD DESIGN
+   GENERATED STORY STYLES - MODERN CARD DESIGN CON MODO OSCURO
    =================================== */
+
+/* Asegurar que las variables se apliquen correctamente */
+:root {
+  --story-bg-light: #f1f5f9;
+  --story-card-light: #ffffff;
+  --story-text-light: #374151;
+}
+
+html.dark-mode {
+  --story-bg-light: var(--bg-primary);
+  --story-card-light: var(--card-bg);
+  --story-text-light: var(--text-primary);
+}
 
 .story-container {
   min-height: calc(100vh - 200px);
   padding: 2rem;
-  background: linear-gradient(135deg, #717575 0%, #9a9c9f 100%);
+  background: var(--bg-primary, #f1f5f9) !important;
   position: relative;
+  color: var(--text-primary, #374151) !important;
 }
 
 /* Fondo con patrón sutil */
@@ -24,21 +38,21 @@
 
 /* Tarjeta principal del cuento */
 .story-card {
-  background: #b1aeae;
+  background: var(--card-bg, #ffffff) !important;
   border-radius: 24px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow, 0 20px 25px -5px rgba(0, 0, 0, 0.1)) !important;
   max-width: 900px;
   margin: 0 auto;
   overflow: hidden;
-  border: 1px solid rgba(124, 58, 237, 0.1);
+  border: 1px solid var(--border-color, rgba(124, 58, 237, 0.1)) !important;
   position: relative;
   z-index: 2;
 }
 
 /* Header del cuento mejorado */
 .story-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
   padding: 3rem 2rem;
   text-align: center;
   position: relative;
@@ -64,6 +78,7 @@
   z-index: 2;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.02em;
+  color: white !important;
 }
 
 .story-meta-container {
@@ -84,17 +99,18 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.15) !important;
   padding: 0.75rem 1.25rem;
   border-radius: 25px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white !important;
 }
 
 .meta-icon {
   width: 24px;
   height: 24px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2) !important;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -105,10 +121,10 @@
 /* Sección de imagen mejorada */
 .story-image-section {
   padding: 3rem;
-  background: #fafbfc;
+  background: var(--card-bg, #fafbfc) !important;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--border-color, #e2e8f0) !important;
 }
 
 .story-image {
@@ -125,11 +141,11 @@
 }
 
 .story-image-placeholder {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   border-radius: 20px;
   padding: 4rem;
   text-align: center;
-  color: white;
+  color: white !important;
   position: relative;
   overflow: hidden;
   min-height: 350px;
@@ -143,7 +159,7 @@
 .placeholder-book {
   width: 100px;
   height: 100px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2) !important;
   border-radius: 16px;
   display: flex;
   align-items: center;
@@ -157,23 +173,25 @@
   font-size: 1.8rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
+  color: white !important;
 }
 
 .placeholder-subtitle {
   font-size: 1.1rem;
   opacity: 0.9;
+  color: white !important;
 }
 
 /* Contenido del cuento */
 .story-content-section {
   padding: 3rem;
-  background: white;
+  background: var(--card-bg, #ffffff) !important;
 }
 
 .story-text {
   font-size: 1.15rem;
   line-height: 1.8;
-  color: #374151;
+  color: var(--text-primary, #374151) !important;
   text-align: justify;
   margin-bottom: 2.5rem;
   font-family: "Georgia", serif;
@@ -181,18 +199,25 @@
 
 .story-text p {
   margin-bottom: 1.5rem;
+  color: var(--text-primary, #374151) !important;
 }
 
 /* Moraleja mejorada */
 .story-moraleja {
-  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-  border: 2px solid #10b981;
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%) !important;
+  border: 2px solid #10b981 !important;
   border-radius: 20px;
   padding: 2.5rem;
   text-align: center;
   margin-top: 3rem;
   position: relative;
   overflow: hidden;
+}
+
+/* Modo oscuro para moraleja */
+html.dark-mode .story-moraleja {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.08) 100%) !important;
+  border-color: #10b981 !important;
 }
 
 .story-moraleja::before {
@@ -219,12 +244,12 @@
 .moraleja-icon {
   width: 40px;
   height: 40px;
-  background: #10b981;
+  background: #10b981 !important;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: white !important;
   font-size: 1.2rem;
   box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
@@ -232,13 +257,13 @@
 .moraleja-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #059669;
+  color: #059669 !important;
   margin: 0;
 }
 
 .moraleja-content {
   font-size: 1.1rem;
-  color: #047857;
+  color: #047857 !important;
   font-style: italic;
   line-height: 1.7;
   position: relative;
@@ -246,11 +271,20 @@
   font-weight: 500;
 }
 
+/* Modo oscuro para texto de moraleja */
+html.dark-mode .moraleja-title {
+  color: #10b981 !important;
+}
+
+html.dark-mode .moraleja-content {
+  color: #34d399 !important;
+}
+
 /* Sección de acciones mejorada */
 .story-actions {
-  background: #f8fafc;
+  background: var(--hover-bg, #f8fafc) !important;
   padding: 3rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--border-color, #e2e8f0) !important;
 }
 
 .actions-grid {
@@ -303,7 +337,7 @@
 .btn-icon {
   width: 24px;
   height: 24px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.2) !important;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -312,8 +346,8 @@
 }
 
 .btn-audio {
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  color: white;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+  color: white !important;
 }
 
 .btn-audio:hover {
@@ -322,8 +356,8 @@
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-  color: white;
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+  color: white !important;
 }
 
 .btn-secondary:hover {
@@ -332,8 +366,8 @@
 }
 
 .btn-success {
-  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
-  color: white;
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%) !important;
+  color: white !important;
 }
 
 .btn-success:hover {
@@ -342,8 +376,8 @@
 }
 
 .btn-library {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
 }
 
 .btn-library:hover {
@@ -352,13 +386,43 @@
 }
 
 .btn-danger {
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: white !important;
 }
 
 .btn-danger:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(239, 68, 68, 0.4);
+}
+
+/* Forzar aplicación en modo oscuro */
+html.dark-mode .story-container {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+html.dark-mode .story-card {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark-mode .story-image-section {
+  background: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+}
+
+html.dark-mode .story-content-section {
+  background: var(--card-bg) !important;
+}
+
+html.dark-mode .story-text,
+html.dark-mode .story-text p {
+  color: var(--text-primary) !important;
+}
+
+html.dark-mode .story-actions {
+  background: var(--hover-bg) !important;
+  border-color: var(--border-color) !important;
 }
 
 /* Animaciones */
@@ -415,3 +479,5 @@
     gap: 1rem;
   }
 }
+
+

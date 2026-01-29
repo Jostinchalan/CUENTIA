@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CuentIA - Cuentos Personalizados con IA</title>
-    <link rel="stylesheet" href="{% static 'css/styles_landing.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user/styles_landing.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -35,7 +35,7 @@
                     Cuentos infantiles personalizados creados con <br>inteligencia artificial para inspirar la imaginación de los más pequeños
                 </p>
                 <div class="landing-buttons">
-                    <a href="{% url 'user:registro' %}" class="landing-button-primary">Registrarse</a>
+                    <a href="{% url 'user:register' %}" class="landing-button-primary">Registrarse</a>
                     <a href="{% url 'user:login' %}" class="landing-button-secondary">Iniciar sesión</a>
                 </div>
                 <h3 class="landing-features-title">¡Descubre la magia de CuentosIA!</h3>
@@ -84,3 +84,4 @@
         </main>
     </div>
 </body>
+</html>

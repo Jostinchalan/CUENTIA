@@ -1,6 +1,7 @@
+//static/js/generated_story.js
 /**
- * Generated Story JavaScript - AUDIO SIMPLIFICADO
- * Un solo botón para escuchar el cuento
+ * Generated Story JavaScript - AUDIO SIMPLIFICADO + MODO OSCURO + DESCARGA
+ * Un solo botón para escuchar el cuento + aplicación del modo oscuro + descarga de PDF
  */
 
 // Variables globales
@@ -16,6 +17,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners()
   animateElements()
 
+  // NUEVA FUNCIONALIDAD - Aplicar modo oscuro
+  applyDarkModeIfActive()
+
+  // NUEVA FUNCIONALIDAD - Configurar descarga
+  setupDownloadButton()
+
   // Verificar TTS
   if ("speechSynthesis" in window) {
     console.log("✅ TTS disponible")
@@ -30,6 +37,169 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 /**
+ * NUEVA FUNCIONALIDAD - Configurar botón de descarga
+ */
+function setupDownloadButton() {
+  console.log("📄 Configurando botón de descarga...")
+
+  // Buscar botón de descarga por ID o clase
+  const downloadBtn =
+    document.getElementById("download-btn") ||
+    document.querySelector(".download-btn") ||
+    document.querySelector('[data-action="download"]')
+
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function (e) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      const cuentoId = this.dataset.cuentoId || document.querySelector(".story-container")?.dataset.storyId
+
+      if (!cuentoId) {
+        console.error("❌ No se pudo determinar el ID del cuento")
+        mostrarMensaje("❌ Error: No se pudo determinar el cuento a descargar", "error")
+        return
+      }
+
+      console.log("📄 Iniciando descarga para cuento:", cuentoId)
+
+      // Mostrar mensaje de descarga
+      mostrarMensaje("📄 Preparando descarga...", "info")
+
+      // Crear enlace temporal para forzar descarga
+      const tempLink = document.createElement("a")
+      tempLink.href = `/stories/cuento/${cuentoId}/descargar/`
+      tempLink.download = "" // Esto fuerza la descarga
+      tempLink.style.display = "none"
+      tempLink.target = "_blank" // Abrir en nueva ventana como respaldo
+
+      // Agregar al DOM, hacer clic y remover
+      document.body.appendChild(tempLink)
+      tempLink.click()
+      document.body.removeChild(tempLink)
+
+      // Mensaje de éxito después de un momento
+      setTimeout(() => {
+        mostrarMensaje("✅ ¡Descarga iniciada!", "success")
+      }, 1000)
+    })
+
+    console.log("✅ Botón de descarga configurado")
+  } else {
+    console.warn("⚠️ No se encontró botón de descarga")
+  }
+
+  // También configurar enlaces de descarga directos
+  document.querySelectorAll('a[href*="/descargar/"]').forEach((link) => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault()
+
+      const href = this.href
+      const cuentoId = href.match(/\/cuento\/(\d+)\/descargar\//)?.[1]
+
+      console.log("📄 Descarga directa para cuento:", cuentoId)
+
+      // Mostrar mensaje de descarga
+      mostrarMensaje("📄 Preparando descarga...", "info")
+
+      // Crear enlace temporal para forzar descarga
+      const tempLink = document.createElement("a")
+      tempLink.href = href
+      tempLink.download = ""
+      tempLink.style.display = "none"
+      tempLink.target = "_blank"
+
+      document.body.appendChild(tempLink)
+      tempLink.click()
+      document.body.removeChild(tempLink)
+
+      setTimeout(() => {
+        mostrarMensaje("✅ ¡Descarga iniciada!", "success")
+      }, 1000)
+    })
+  })
+}
+
+/**
+ * NUEVA FUNCIONALIDAD - Aplicar modo oscuro si está activo
+ */
+function applyDarkModeIfActive() {
+  // Verificar si el modo oscuro está activo
+  const isDarkMode = document.documentElement.classList.contains("dark-mode")
+
+  if (isDarkMode) {
+    console.log("🌙 Modo oscuro detectado en generated_story")
+
+    // Forzar aplicación de estilos de modo oscuro
+    const storyContainer = document.querySelector(".story-container")
+    const storyCard = document.querySelector(".story-card")
+
+    if (storyContainer) {
+      storyContainer.style.setProperty("background", "var(--bg-primary)", "important")
+      storyContainer.style.setProperty("color", "var(--text-primary)", "important")
+    }
+
+    if (storyCard) {
+      storyCard.style.setProperty("background", "var(--card-bg)", "important")
+      storyCard.style.setProperty("border-color", "var(--border-color)", "important")
+    }
+
+    // Aplicar a todas las secciones
+    const sections = document.querySelectorAll(".story-image-section, .story-content-section, .story-actions")
+    sections.forEach((section) => {
+      section.style.setProperty("background", "var(--card-bg)", "important")
+      if (section.classList.contains("story-actions")) {
+        section.style.setProperty("background", "var(--hover-bg)", "important")
+      }
+    })
+
+    // Aplicar a texto
+    const textElements = document.querySelectorAll(".story-text, .story-text p")
+    textElements.forEach((element) => {
+      element.style.setProperty("color", "var(--text-primary)", "important")
+    })
+
+    // Aplicar a bordes
+    const borderElements = document.querySelectorAll(".story-image-section, .story-actions")
+    borderElements.forEach((element) => {
+      element.style.setProperty("border-color", "var(--border-color)", "important")
+    })
+
+    console.log("✅ Modo oscuro aplicado correctamente a generated_story")
+  } else {
+    console.log("☀️ Modo claro activo en generated_story")
+  }
+}
+
+/**
+ * NUEVA FUNCIONALIDAD - Observar cambios en el modo oscuro
+ */
+function observeDarkModeChanges() {
+  // Crear un observer para detectar cambios en la clase dark-mode
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === "attributes" && mutation.attributeName === "class") {
+        const isDarkMode = document.documentElement.classList.contains("dark-mode")
+        console.log("🔄 Cambio de modo detectado:", isDarkMode ? "Oscuro" : "Claro")
+
+        // Reaplicar estilos
+        setTimeout(() => {
+          applyDarkModeIfActive()
+        }, 100)
+      }
+    })
+  })
+
+  // Observar cambios en el elemento html
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  })
+
+  console.log("👁️ Observer del modo oscuro configurado")
+}
+
+/**
  * Configurar event listeners
  */
 function setupEventListeners() {
@@ -37,6 +207,9 @@ function setupEventListeners() {
   if (audioBtn) {
     audioBtn.addEventListener("click", toggleAudio)
   }
+
+  // NUEVA FUNCIONALIDAD - Configurar observer del modo oscuro
+  observeDarkModeChanges()
 }
 
 /**
@@ -117,7 +290,7 @@ function playStory() {
     console.error("❌ Error TTS:", event)
     isPlaying = false
     updateAudioButton()
-    mostrarMensaje(" AUDIO DETENIDO", "error")
+    mostrarMensaje("❌ Audio detenido", "error")
   }
 
   // Iniciar reproducción
@@ -145,11 +318,17 @@ function updateAudioButton() {
 
   if (audioBtn) {
     if (isPlaying) {
-      audioBtn.textContent = "⏹️ Detener Audio"
-      audioBtn.className = "btn-action btn-danger"
+      audioBtn.innerHTML = `
+        <div class="btn-icon">⏹️</div>
+        <span>Detener Audio</span>
+      `
+      audioBtn.className = "action-btn btn-danger"
     } else {
-      audioBtn.textContent = "🎧 Escuchar Cuento"
-      audioBtn.className = "btn-action btn-audio"
+      audioBtn.innerHTML = `
+        <div class="btn-icon">🎧</div>
+        <span>Escuchar Cuento</span>
+      `
+      audioBtn.className = "action-btn btn-audio"
     }
   }
 }
@@ -250,4 +429,4 @@ function animateElements() {
   })
 }
 
-console.log("✅ Script de audio simplificado cargado")
+console.log("✅ Script de audio simplificado + modo oscuro + descarga cargado")
