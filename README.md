@@ -1,4 +1,4 @@
-![Logo del proyecto](static/images/logo1.png)
+![Logo del proyecto](/CUENTIA/static/images/logo1.png)
 # Proyecto Final - CuentIA
 
 
