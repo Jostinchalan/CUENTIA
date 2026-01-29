@@ -19,3 +19,5 @@ db.sqlite3
 # Configuraciones del editor
 .idea/
 .vscode/
+
+.env
